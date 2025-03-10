@@ -1,0 +1,73 @@
+<div class="profit-loss-container">
+  <mat-card class="summary-card">
+    <mat-card-header>
+      <mat-card-title>Profit/Loss Summary</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="summary-grid">
+        <div class="summary-item">
+          <span class="label">Total Investment</span>
+          <span class="value">{{profitLossData.totalInvestment | currency}}</span>
+        </div>
+        <div class="summary-item">
+          <span class="label">Current Value</span>
+          <span class="value">{{profitLossData.currentValue | currency}}</span>
+        </div>
+        <div class="summary-item">
+          <span class="label">Total P/L</span>
+          <span class="value" [ngClass]="{'positive': profitLossData.totalPnL > 0, 'negative': profitLossData.totalPnL < 0}">
+            {{profitLossData.totalPnL | currency}}
+          </span>
+        </div>
+        <div class="summary-item">
+          <span class="label">P/L %</span>
+          <span class="value" [ngClass]="{'positive': profitLossData.pnlPercentage > 0, 'negative': profitLossData.pnlPercentage < 0}">
+            {{profitLossData.pnlPercentage}}%
+          </span>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="trades-card">
+    <mat-card-header>
+      <mat-card-title>Trading History</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <table mat-table [dataSource]="trades">
+        <ng-container matColumnDef="symbol">
+          <th mat-header-cell *matHeaderCellDef>Symbol</th>
+          <td mat-cell *matCellDef="let trade">{{trade.symbol}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="type">
+          <th mat-header-cell *matHeaderCellDef>Type</th>
+          <td mat-cell *matCellDef="let trade">{{trade.type}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="price">
+          <th mat-header-cell *matHeaderCellDef>Price</th>
+          <td mat-cell *matCellDef="let trade">{{trade.price | currency}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="quantity">
+          <th mat-header-cell *matHeaderCellDef>Quantity</th>
+          <td mat-cell *matCellDef="let trade">{{trade.quantity}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="total">
+          <th mat-header-cell *matHeaderCellDef>Total</th>
+          <td mat-cell *matCellDef="let trade">{{trade.total | currency}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef>Status</th>
+          <td mat-cell *matCellDef="let trade">{{trade.status}}</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </mat-card-content>
+  </mat-card>
+</div>

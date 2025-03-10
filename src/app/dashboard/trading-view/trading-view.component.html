@@ -1,0 +1,63 @@
+<div class="trading-container">
+  <mat-card class="settings-card">
+    <mat-card-header>
+      <mat-card-title>Trading Settings</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form [formGroup]="tradingForm" (ngSubmit)="onSubmit()">
+        <mat-form-field appearance="outline">
+          <mat-label>Trading Amount</mat-label>
+          <input matInput type="number" formControlName="amount" placeholder="Enter amount">
+          <mat-error *ngIf="tradingForm.get('amount')?.hasError('required')">
+            Amount is required
+          </mat-error>
+          <mat-error *ngIf="tradingForm.get('amount')?.hasError('min')">
+            Amount must be greater than 0
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Trading Strategy</mat-label>
+          <mat-select formControlName="strategy">
+            <mat-option value="conservative">Conservative</mat-option>
+            <mat-option value="moderate">Moderate</mat-option>
+            <mat-option value="aggressive">Aggressive</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" type="submit" [disabled]="!tradingForm.valid">
+          Update Settings
+        </button>
+      </form>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="stocks-card">
+    <mat-card-header>
+      <mat-card-title>Top Performing Stocks</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <table mat-table [dataSource]="stocks">
+        <ng-container matColumnDef="symbol">
+          <th mat-header-cell *matHeaderCellDef> Symbol </th>
+          <td mat-cell *matCellDef="let stock"> {{stock.symbol}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="price">
+          <th mat-header-cell *matHeaderCellDef> Price </th>
+          <td mat-cell *matCellDef="let stock"> {{stock.price | currency}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="change">
+          <th mat-header-cell *matHeaderCellDef> Change </th>
+          <td mat-cell *matCellDef="let stock" [ngClass]="{'positive': stock.change > 0, 'negative': stock.change < 0}">
+            {{stock.change}}%
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="['symbol', 'price', 'change']"></tr>
+        <tr mat-row *matRowDef="let row; columns: ['symbol', 'price', 'change'];"></tr>
+      </table>
+    </mat-card-content>
+  </mat-card>
+</div>
